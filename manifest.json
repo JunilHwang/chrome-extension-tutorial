@@ -10,7 +10,11 @@
     "default_popup": "tutorial.html"
   },
 
-  "permissions": ["activeTab"],
+  "permissions": ["activeTab", "tabs"],
+
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
 
   "chrome_settings_overrides": {
     "search_provider": {
@@ -20,7 +24,6 @@
       "name": "ZUM Search Engine",
       "search_url": "http://search.zum.com/search.zum?query={searchTerms}",
       "is_default": true
-    },
-    "startup_pages": ["https://zum.com"]
+    }
   }
 }
