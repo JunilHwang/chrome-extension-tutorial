@@ -9,7 +9,7 @@
     "default_icon": "icon.png"
   },
 
-  "permissions": ["activeTab", "tabs", "storage"],
+  "permissions": ["activeTab", "tabs", "storage", "bookmarks"],
 
   "chrome_url_overrides": {
     "newtab": "index.html"

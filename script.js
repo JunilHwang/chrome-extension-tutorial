@@ -1,23 +1,5 @@
-const store = {
-  async setter (key, value) {
-    return new Promise((resolve, reject) => {
-      try {
-        chrome.storage.local.set({ [key]: value }, resolve)
-      } catch (e) {
-        reject(e)
-      }
-    })
-  },
-  async getter (key) {
-    return new Promise((resolve, reject) => {
-      try {
-        chrome.storage.local.get([ key ], resolve)
-      } catch (e) {
-        reject(e)
-      }
-    })
-  }
-}
+import { store } from './store.js'
+import { bookmark } from './bookmark.js'
 
 window.onload = async () => {
   const storage = await store.getter('test3')
@@ -25,4 +7,5 @@ window.onload = async () => {
     await store.setter('test3', 'hello storage3')
     Object.assign(storage, await store.getter('test3'))
   }
+  console.log(storage)
 }
