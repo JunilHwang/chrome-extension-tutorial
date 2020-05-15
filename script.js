@@ -20,12 +20,9 @@ const store = {
 }
 
 window.onload = async () => {
-  const test = await store.getter('test')
-  if (test.key === undefined) {
-    await store.setter('test', 'hello storage')
-    const result = await store.getter('test')
-    console.log('result', result)
-  } else {
-    console.log('test', test)
+  const storage = await store.getter('test3')
+  if (storage.test === undefined) {
+    await store.setter('test3', 'hello storage3')
+    Object.assign(storage, await store.getter('test3'))
   }
 }
