@@ -1,5 +1,7 @@
-export const store = {
-  async setter (key, value) {
+import { Store } from './Store.js';
+
+export const ChromeStore = class extends Store {
+  async _setter (key, value) {
     return new Promise((resolve, reject) => {
       try {
         chrome.storage.local.set({ [key]: value }, resolve)
@@ -7,8 +9,9 @@ export const store = {
         reject(e)
       }
     })
-  },
-  async getter (key) {
+  }
+
+  async _getter (key) {
     return new Promise((resolve, reject) => {
       try {
         chrome.storage.local.get([ key ], resolve)
@@ -17,4 +20,5 @@ export const store = {
       }
     })
   }
+
 }
