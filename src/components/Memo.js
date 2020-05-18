@@ -57,13 +57,17 @@ export const Memo = {
   methods: {
     async addMemo () {
       this.memos.push(this.memoInput)
-      this.memoInput = ''
+      this.offAdding()
       await MemoService.setMemos([ ...this.memos ]);
     },
     async updateMemo () {
       this.memos[this.isEditingMemo] = this.memoEditInput
-      this.memoEditInput = ''
-      this.isEditingMemo = null
+      this.offEditing()
+      await MemoService.setMemos([ ...this.memos ]);
+    },
+    async deleteMemo (key) {
+      console.log(key)
+      this.memos.splice(key, 1)
       await MemoService.setMemos([ ...this.memos ]);
     },
     onAdding () {
