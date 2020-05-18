@@ -5,8 +5,23 @@ export const Memo = {
     <section>
       <h2>메모</h2>
       <ul v-if="memos.length">
-        <li v-for="(v, k) in memos" :key="k">
-          {{ v }}
+        <li
+          v-for="(v, k) in memos"
+          :key="k"
+          @click="selectMemo(k)">
+          <template v-if="isEditingMemo !== k">
+            {{ v }}
+            <a href="#" @click.prevent="onEditing(k)">수정</a> /
+            <a href="#" @click.prevent="deleteMemo(k)">삭제</a>
+          </template>
+          <input
+            v-else
+            ref="inputOfEditing"
+            type="text"
+            @keyup.enter="updateMemo"
+            @keyup.esc="offEditing"
+            v-model="memoEditInput"
+          />
         </li>
       </ul>
       <input
@@ -17,12 +32,20 @@ export const Memo = {
         @keyup.esc="offAdding"
         v-model="memoInput"
       />
+      <input
+        ref="inputOfEditing"
+        v-if="isEditing"
+        type="text"
+        @keyup.enter="updateMemo"
+        @keyup.esc="offEditing"
+        v-model="memoInput"
+      />
       <p>
         <button
           v-if="!isAdding"
           type="button"
           @click="onAdding"
-          style="width:100px;height:20px;background:#fff;"
+          style="background:#fff;padding:5px 15px;"
           v-html="'추가'"
         />
       </p>
@@ -33,6 +56,8 @@ export const Memo = {
       memos: [],
       memoInput: '',
       isAdding: false,
+      isEditingMemo: null,
+      selectedMemo: null
     }
   },
   methods: {
@@ -48,6 +73,17 @@ export const Memo = {
     offAdding () {
       this.isAdding = false
       this.memoInput = ''
+    },
+    onEditing (k) {
+      this.isEditingMemo = k
+      this.$nextTick(() => this.$refs.inputOfEditing.focus())
+    },
+    offEditing () {
+      this.isEditing = false
+      this.memoInput = ''
+    },
+    selectMemo (key) {
+      this.selectedMemo = key
     }
   },
   async created () {
