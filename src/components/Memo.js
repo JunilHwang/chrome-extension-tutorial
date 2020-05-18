@@ -1,11 +1,11 @@
-import Store from '../store/index.js'
+import { MemoService } from '../services/index.js'
 
 export const Memo = {
   template: `
     <section>
       <h2>메모</h2>
-      <ul v-if="memoList.length">
-        <li v-for="(v, k) in memoList" :key="k">
+      <ul v-if="memos.length">
+        <li v-for="(v, k) in memos" :key="k">
           {{ v }}
         </li>
       </ul>
@@ -30,15 +30,16 @@ export const Memo = {
   `,
   data () {
     return {
-      memoList: [],
+      memos: [],
       memoInput: '',
       isAdding: false,
     }
   },
   methods: {
-    addMemo () {
-      this.memoList.push(this.memoInput)
+    async addMemo () {
+      this.memos.push(this.memoInput)
       this.memoInput = ''
+      await MemoService.setMemos([ ...this.memos ]);
     },
     onAdding () {
       this.isAdding = true
@@ -50,6 +51,6 @@ export const Memo = {
     }
   },
   async created () {
-    this.memoList = (await Store.getter('memoList')) || []
+    this.memos = await MemoService.getMemos();
   }
 }

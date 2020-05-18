@@ -14,9 +14,7 @@ export const ChromeStore = class extends Store {
   async _getter (key) {
     return new Promise((resolve, reject) => {
       try {
-        chrome.storage.local.get('key', storage => {
-          resolve(storage.key || null)
-        })
+        chrome.storage.local.get(key, storage => resolve(storage[key]))
       } catch (e) {
         reject(e)
       }
