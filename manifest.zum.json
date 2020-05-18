@@ -13,5 +13,16 @@
 
   "chrome_url_overrides": {
     "newtab": "index.html"
+  },
+
+  "chrome_settings_overrides": {
+    "search_provider": {
+      "encoding": "UTF-8",
+      "favicon_url": "http://zum.com/favicon.ico?v=2",
+      "keyword": "ZUM",
+      "name": "ZUM Search Engine",
+      "search_url": "http://search.zum.com/search.zum?query={searchTerms}",
+      "is_default": true
+    }
   }
 }
