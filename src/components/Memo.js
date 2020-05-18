@@ -2,7 +2,7 @@ import { MemoService } from '../services/index.js'
 
 export const Memo = {
   template: `
-    <section>
+    <section style="font-size:15px;">
       <h2>메모</h2>
       <ul v-if="memos.length">
         <li
@@ -10,7 +10,7 @@ export const Memo = {
           :key="k"
           @click="selectMemo(k)">
           <template v-if="isEditingMemo !== k">
-            {{ v }}
+            <span>{{ v }}</span>
             <a href="#" @click.prevent="onEditing(k)">수정</a> /
             <a href="#" @click.prevent="deleteMemo(k)">삭제</a>
           </template>
@@ -21,6 +21,7 @@ export const Memo = {
             @keyup.enter="updateMemo"
             @keyup.esc="offEditing"
             v-model="memoEditInput"
+            style="width:200px;height:20px;font-size:15px;"
           />
         </li>
       </ul>
@@ -30,14 +31,6 @@ export const Memo = {
         type="text"
         @keyup.enter="addMemo"
         @keyup.esc="offAdding"
-        v-model="memoInput"
-      />
-      <input
-        ref="inputOfEditing"
-        v-if="isEditing"
-        type="text"
-        @keyup.enter="updateMemo"
-        @keyup.esc="offEditing"
         v-model="memoInput"
       />
       <p>
@@ -55,6 +48,7 @@ export const Memo = {
     return {
       memos: [],
       memoInput: '',
+      memoEditInput: '',
       isAdding: false,
       isEditingMemo: null,
       selectedMemo: null
@@ -64,6 +58,12 @@ export const Memo = {
     async addMemo () {
       this.memos.push(this.memoInput)
       this.memoInput = ''
+      await MemoService.setMemos([ ...this.memos ]);
+    },
+    async updateMemo () {
+      this.memos[this.isEditingMemo] = this.memoEditInput
+      this.memoEditInput = ''
+      this.isEditingMemo = null
       await MemoService.setMemos([ ...this.memos ]);
     },
     onAdding () {
@@ -76,15 +76,16 @@ export const Memo = {
     },
     onEditing (k) {
       this.isEditingMemo = k
-      this.$nextTick(() => this.$refs.inputOfEditing.focus())
+      this.memoEditInput = this.memos[k]
+      this.$nextTick(() => this.$refs.inputOfEditing.pop().focus())
     },
     offEditing () {
-      this.isEditing = false
-      this.memoInput = ''
+      this.isEditingMemo = false
+      this.memoEditInput = ''
     },
     selectMemo (key) {
       this.selectedMemo = key
-    }
+    },
   },
   async created () {
     this.memos = await MemoService.getMemos();
