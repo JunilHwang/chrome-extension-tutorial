@@ -12,9 +12,6 @@ const BookmarkItem = {
     </article>
   `,
   props: [ 'title', 'children', 'id', 'index', 'parentId' ],
-  created () {
-    console.log(this.children)
-  }
 }
 
 export const Bookmark = {
