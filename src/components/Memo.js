@@ -1,3 +1,5 @@
+import Store from '../store/index.js'
+
 export const Memo = {
   template: `
     <section>
@@ -7,11 +9,33 @@ export const Memo = {
           {{ v }}
         </li>
       </ul>
+      <input
+        ref="inputOfAdding"
+        v-if="isAdding"
+        type="text"
+        @keyup.enter="addMemo"
+        @keyup.esc="isAdding = false"
+        v-model="memoInput"
+        autofocus
+      />
+      <p>
+        <button type="button" @click="isAdding = !isAdding">추가</button>
+      </p>
     </section>
   `,
   data () {
     return {
-      memoList: []
+      memoList: [],
+      memoInput: '',
+      isAdding: false,
     }
+  },
+  methods: {
+    addMemo () {
+
+    },
+  },
+  async created () {
+    this.memoList = (await Store.getter('memoList')) || []
   }
 }
