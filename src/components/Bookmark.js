@@ -4,9 +4,17 @@ const BookmarkItem = {
   template: `
     <article>
       <h3>({{ id }}) {{ title }}</h3>
+      <ul>
+        <li v-for="({ title, url }, k) in children" :key="k">
+          <a :href="url" target="_blank">{{ title }}</a>
+        </li>
+      </ul>
     </article>
   `,
-  props: [ 'title', 'children', 'id', 'index', 'parentId' ]
+  props: [ 'title', 'children', 'id', 'index', 'parentId' ],
+  created () {
+    console.log(this.children)
+  }
 }
 
 export const Bookmark = {
