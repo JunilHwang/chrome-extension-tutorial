@@ -1,15 +1,7 @@
-export class App {
-  $target = null
-  constructor ($target) {
-    this.$target = $target
-    this.initData()
-  }
+import Vue from './vue.esm.browser.js'
 
-  initData () {
-    console.log('initData')
-  }
-
-  static of (el) {
-    return new App(el)
-  }
-}
+export const App = Vue.extend({
+  template: `
+    <h1>this is App</h1> 
+  `
+})

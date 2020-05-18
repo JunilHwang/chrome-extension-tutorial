@@ -1,3 +1,7 @@
+import Vue from './vue.esm.browser.js'
 import { App } from './App.js'
 
-App.of(document.querySelector('#app'))
+new Vue({
+  el: '#app',
+  render: h => h(App)
+})
