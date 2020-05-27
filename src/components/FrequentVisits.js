@@ -20,17 +20,15 @@ export const FrequentVisits = {
   },
   async created () {
     this.visited = await new Promise(resolve => {
+      const urls = {}
+      const sorted = (a, b) => urls[b] - urls[a];
       chrome.history.search({text: '', startTime, maxResults}, items => {
-        const urls = {}
-        const sorted = (a, b) => urls[b] - urls[a];
-        items.forEach(({url}, key) => {
-          chrome.history.getVisits({url}, result => {
-            for (const {transition} of result) {
-              if (transition === 'typed') urls[url] = (urls[url] || 0) + 1;
-            }
-            if (key === 999) resolve(Object.keys(urls).sort(sorted))
-          })
-        })
+        items.forEach(({url}, key) => chrome.history.getVisits({url}, result => {
+          for (const {transition} of result) {
+            if (transition === 'typed') urls[url] = (urls[url] || 0) + 1;
+          }
+          if (key === 999) resolve(Object.keys(urls).sort(sorted))
+        }))
       })
     });
   }
