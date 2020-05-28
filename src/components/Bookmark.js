@@ -20,6 +20,7 @@ export const Bookmark = {
     while (bookmarks.find(v => v.children)) {
       bookmarks = bookmarks.flatMap(v => v.children || [ v ])
     }
-    this.bookmarks = bookmarks;
+    this.bookmarks = bookmarks.map(({ title, url }) => ({ title, url }));
+    // console.log(JSON.stringify(this.bookmarks))
   }
 }
