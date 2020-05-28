@@ -7,7 +7,7 @@ export const FrequentVisits = {
     <section>
       <h2>자주 방문한 사이트</h2>
       <ul>
-        <li v-for="({ url, title }) in visited" :key="url">
+        <li v-for="({ url, title }) in visited" :key="url" v-if="title.length">
           <a :href="url" v-html="title" />
         </li>
       </ul>
@@ -30,10 +30,9 @@ export const FrequentVisits = {
               visited[url].count += 1;
             }
           })
-          if (key === 999) resolve(Object.entries(visited).sort(sorted).map(([ url, { title } ]) => ({ url, title })))
+          if (key === maxResults - 1) resolve(Object.entries(visited).sort(sorted).map(([ url, { title } ]) => ({ url, title })))
         }))
       })
     });
-    console.log(this.visited)
   }
 }

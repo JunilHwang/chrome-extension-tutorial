@@ -1,29 +1,12 @@
 import { BookmarkService } from '../services/index.js'
 
-const BookmarkItem = {
-  template: `
-    <article>
-      <h3>({{ id }}) {{ title }}</h3>
-      <ul>
-        <li v-for="({ title, url }, k) in children" :key="k">
-          <a :href="url" target="_blank">{{ title }}</a>
-        </li>
-      </ul>
-    </article>
-  `,
-  props: [ 'title', 'children', 'id', 'index', 'parentId' ],
-}
-
 export const Bookmark = {
-  components: { BookmarkItem },
   template: `
     <section>
       <h2>북마크</h2>
-      <bookmark-item
-        v-for="(item, k) in bookmarks.children"
-        :key="k"
-        v-bind="item"
-      />
+      <article v-for="({ title, url }, k) in bookmarks" :key="k">
+        <a :href="url" target="_blank">{{ title }}</a>
+      </article>
     </section>
   `,
   data() {
@@ -32,6 +15,11 @@ export const Bookmark = {
     }
   },
   async created () {
-    this.bookmarks = await BookmarkService.getTree();
+    const [ tree ] = await BookmarkService.getTree();
+    let bookmarks = tree.children.flatMap(v => v.children);
+    while (bookmarks.find(v => v.children)) {
+      bookmarks = bookmarks.flatMap(v => v.children || [ v ])
+    }
+    this.bookmarks = bookmarks;
   }
 }
