@@ -7,8 +7,8 @@ export const FrequentVisits = {
     <section>
       <h2>자주 방문한 사이트</h2>
       <ul>
-        <li v-for="(v, k) in visited" :key="k">
-          <a :href="v" v-html="v" />
+        <li v-for="([ url, { title } ]) in visited" :key="url" v-if="title.length">
+          <a :href="url" v-html="title" />
         </li>
       </ul>
     </section>
@@ -20,14 +20,18 @@ export const FrequentVisits = {
   },
   async created () {
     this.visited = await new Promise(resolve => {
-      const urls = {}
-      const sorted = (a, b) => urls[b] - urls[a];
+      const visited = {}
+      const sorted = (a, b) => b[1].count - a[1].count;
       chrome.history.search({text: '', startTime, maxResults}, items => {
-        items.forEach(({url}, key) => chrome.history.getVisits({url}, result => {
-          for (const {transition} of result) {
-            if (transition === 'typed') urls[url] = (urls[url] || 0) + 1;
-          }
-          if (key === 999) resolve(Object.keys(urls).sort(sorted))
+        console.log(items.map(v => v.title));
+        items.forEach(({url, title}, key) => chrome.history.getVisits({url}, result => {
+          result.forEach(({ transition }) => {
+            if (transition === 'typed') {
+              visited[url] = (visited[url] || { title, count: 0 })
+              visited[url].count += 1;
+            }
+          })
+          if (key === 999) resolve(Object.entries(visited).sort(sorted))
         }))
       })
     });
