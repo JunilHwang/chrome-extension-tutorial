@@ -1,4 +1,4 @@
-import { BookmarkService } from '../services/index.js'
+import { BookmarkService } from '../services'
 
 export const Bookmark = {
   template: `

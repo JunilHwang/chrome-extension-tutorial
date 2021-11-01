@@ -1,4 +1,4 @@
-import { Memo, Bookmark, FrequentVisits } from './components/index.js'
+import { Memo, Bookmark, FrequentVisits } from './components'
 
 export const App = {
   components: { Memo, Bookmark, FrequentVisits },

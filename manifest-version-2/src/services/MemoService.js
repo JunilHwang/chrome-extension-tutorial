@@ -1,4 +1,4 @@
-import store from '../store/index.js';
+import store from '../store';
 
 export const MemoService = Object.freeze({
   async getMemos () {

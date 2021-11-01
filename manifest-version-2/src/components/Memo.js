@@ -1,4 +1,4 @@
-import { MemoService } from '../services/index.js'
+import { MemoService } from '../services'
 
 export const Memo = {
   template: `
