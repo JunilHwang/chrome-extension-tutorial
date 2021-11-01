@@ -1,5 +1,13 @@
-// 1. Send the background a message requesting the user's data
-chrome.runtime.sendMessage('get-top-sites', (topSites) => {
-  // 3. Got an asynchronous response with the data from the background
-  console.log(topSites);
-});
+window.postMessage({ type: 'READY_EXTENSION' });
+
+window.addEventListener('message', ({ data, origin }) => {
+  if (data.type === 'GET_TOP_SITES') {
+    sendTopSites();
+  }
+})
+
+function sendTopSites () {
+  chrome.runtime.sendMessage('get-top-sites', (topSites) => {
+    window.postMessage({ type: 'SEND_TOP_SITES', payload: topSites });
+  });
+}

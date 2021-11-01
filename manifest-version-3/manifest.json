@@ -23,12 +23,20 @@
 
   "content_scripts": [
     {
-      "matches": ["https://start.zum.com/*"],
+      "matches": [
+        "https://start.zum.com/*",
+        "http://localhost:4000/*"
+      ],
       "js": ["appendTopSites.js"]
     }
   ],
 
   "host_permissions": [
     "https://start.zum.com/*"
-  ]
+  ],
+
+  "chrome_settings_overrides": {
+    "homepage": "https://start.zum.com",
+    "startup_pages": ["https://start.zum.com"]
+  }
 }
